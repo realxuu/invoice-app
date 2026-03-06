@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>发票开具 - 发票详情</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page-container">
+    <!-- 顶部导航 -->
+    <header class="header">
+      <a href="invoice.html" class="back-btn"></a>
+      <h1 class="title">发票详情</h1>
+    </header>
+
+    <div class="detail-section">
+      <!-- 发票票面预览 -->
+      <div class="invoice-preview">
+        <!-- 发票头部 -->
+        <div class="invoice-preview-header">
+          <div class="invoice-title">全国统一发票监制章</div>
+          <div class="invoice-type" id="invoice-type">增值税普通发票</div>
+          <div class="invoice-code">
+            <span>发票代码：044001900111</span>
+            <span>发票号码：<span id="invoice-no">24400190011112345678</span></span>
+          </div>
+        </div>
+
+        <!-- 发票主体 -->
+        <div class="invoice-preview-body">
+          <!-- 购买方信息 -->
+          <div class="invoice-party">
+            <div class="party-title">购买方</div>
+            <div class="party-info">
+              <div class="party-row">
+                <span class="party-label">名称：</span>
+                <span class="party-value" id="buyer-name">广州科技有限公司</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">纳税人识别号：</span>
+                <span class="party-value" id="buyer-tax-no">91440101MA5CQ8X789</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">地址、电话：</span>
+                <span class="party-value" id="buyer-address">广州市天河区天河路123号 020-88888888</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">开户行及账号：</span>
+                <span class="party-value" id="buyer-bank">中国工商银行广州分行 6222021234567890123</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 商品明细表格 -->
+          <div class="invoice-items">
+            <table class="invoice-table">
+              <thead>
+                <tr>
+                  <th style="width: 35%;">货物或应税劳务、服务名称</th>
+                  <th style="width: 15%;">规格型号</th>
+                  <th style="width: 10%;">单位</th>
+                  <th style="width: 10%;">数量</th>
+                  <th style="width: 15%;">单价</th>
+                  <th style="width: 15%;">金额</th>
+                </tr>
+              </thead>
+              <tbody id="invoice-items-body">
+                <tr>
+                  <td>ETC卡片工本费</td>
+                  <td>-</td>
+                  <td>张</td>
+                  <td>1</td>
+                  <td>¥25.00</td>
+                  <td>¥25.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 合计金额 -->
+          <div class="invoice-total">
+            <div class="total-row">
+              <span class="total-label">合计金额</span>
+              <span class="total-value" id="total-amount">¥25.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">价税合计（大写）</span>
+              <span class="total-value" id="total-amount-cn">贰拾伍元整</span>
+            </div>
+          </div>
+
+          <!-- 销售方信息 -->
+          <div class="invoice-party">
+            <div class="party-title">销售方</div>
+            <div class="party-info">
+              <div class="party-row">
+                <span class="party-label">名称：</span>
+                <span class="party-value" id="seller-name">广州粤通科技有限公司</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">纳税人识别号：</span>
+                <span class="party-value" id="seller-tax-no">91440101MA5ABC1234</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">地址、电话：</span>
+                <span class="party-value" id="seller-address">广州市番禺区番禺大道北555号 020-12345678</span>
+              </div>
+              <div class="party-row">
+                <span class="party-label">开户行及账号：</span>
+                <span class="party-value" id="seller-bank">中国建设银行广州分行 44050112345678901234</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 备注 -->
+          <div class="invoice-remark">
+            <span class="remark-label">备注：</span>
+            <span class="remark-value" id="invoice-remark">订单编号：GB202401150001</span>
+          </div>
+
+          <!-- 开票日期 -->
+          <div class="invoice-date">
+            <span>开票日期：<span id="invoice-date">2024年01月10日</span></span>
+          </div>
+        </div>
+
+        <!-- 发票印章 -->
+        <div class="invoice-stamp">发票专用章</div>
+      </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="detail-actions">
+      <button class="btn btn-download" onclick="showDownloadModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+        下载
+      </button>
+      <button class="btn btn-detail-email" onclick="showDetailEmailModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+        发送邮箱
+      </button>
+    </div>
+  </div>
+
+  <!-- 下载格式选择弹窗 -->
+  <div id="download-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">选择下载格式</span>
+        <span class="modal-close" onclick="closeDownloadModal()">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="download-options">
+          <div class="download-option" onclick="downloadInvoice('pdf')">
+            <div class="download-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="#ff4d4f">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10.92,12.31C10.68,11.54 10.15,9.08 11.55,9.04C12.95,9 12.03,12.16 12.03,12.16C12.42,13.65 14.05,14.72 14.05,14.72C14.55,14.57 17.4,14.24 17,15.72C16.57,17.2 13.5,15.81 13.5,15.81C11.55,15.95 10.09,16.47 10.09,16.47C8.96,18.58 7.64,19.5 7.1,18.61C6.43,17.5 9.23,16.07 9.23,16.07C10.68,13.72 10.9,12.35 10.92,12.31Z"/>
+              </svg>
+            </div>
+            <div class="download-info">
+              <div class="download-name">PDF格式</div>
+              <div class="download-desc">适用于打印和存档</div>
+            </div>
+          </div>
+          <div class="download-option" onclick="downloadInvoice('ofd')">
+            <div class="download-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="#1890ff">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M12.9,14.5L15.8,19H14L12,15.6L10,19H8.2L11.1,14.5L8.2,10H10L12,13.4L14,10H15.8L12.9,14.5Z"/>
+              </svg>
+            </div>
+            <div class="download-info">
+              <div class="download-name">OFD格式</div>
+              <div class="download-desc">电子发票标准格式</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 发送邮箱弹窗 -->
+  <div id="detail-email-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">发送至邮箱</span>
+        <span class="modal-close" onclick="closeDetailEmailModal()">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="email-info" id="detail-email-invoice-info">
+          <div class="info-row">
+            <span class="info-label">发票号码</span>
+            <span class="info-value" id="detail-email-invoice-no">24400190011112345678</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">接收邮箱 <span class="required">*</span></label>
+          <input type="email" id="detail-email-input" placeholder="请输入接收邮箱地址">
+        </div>
+        <div class="form-group">
+          <label class="form-label">发送格式</label>
+          <div class="format-options">
+            <label class="format-option">
+              <input type="radio" name="email-format" value="pdf" checked>
+              <span>PDF</span>
+            </label>
+            <label class="format-option">
+              <input type="radio" name="email-format" value="ofd">
+              <span>OFD</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeDetailEmailModal()">取消</button>
+        <button class="btn btn-primary" onclick="confirmDetailSendEmail()">确认发送</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/detail.js"></script>
+</body>
+</html>
