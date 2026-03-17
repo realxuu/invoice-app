@@ -383,27 +383,6 @@ input, select, button {
   padding: 0 var(--page-padding);
 }
 
-.list-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 12px 0;
-}
-
-.list-header .select-all {
-  display: none;
-  align-items: center;
-  gap: 8px;
-}
-
-.list-header.select-mode {
-  justify-content: space-between;
-}
-
-.list-header.select-mode .select-all {
-  display: flex;
-}
-
 /* 复选框 */
 .checkbox {
   width: 18px;
@@ -415,12 +394,7 @@ input, select, button {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-}
-
-.checkbox.hidden {
-  visibility: hidden;
-  width: 0;
-  margin-right: 0;
+  flex-shrink: 0;
 }
 
 .checkbox.checked {
@@ -437,6 +411,90 @@ input, select, button {
   transform: rotate(-45deg) translateY(-1px);
 }
 
+/* 分组标题 */
+.invoice-group {
+  margin-bottom: 12px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: #f8f8f8;
+  border-radius: var(--card-radius);
+  margin-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.group-header:hover {
+  background-color: #f0f0f0;
+}
+
+.group-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-expand-icon {
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  width: 12px;
+}
+
+.group-expand-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.group-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.group-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.group-total {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--danger-color);
+}
+
+.group-arrow {
+  font-size: 18px;
+  color: var(--text-muted);
+  font-weight: bold;
+}
+
+.group-content {
+  padding-left: 0;
+}
+
+/* 外部链接分组样式 */
+.invoice-group.external-link .group-arrow {
+  color: var(--primary-color);
+  font-size: 20px;
+}
+
+/* 分组空状态 */
+.group-empty {
+  background-color: #fafafa;
+  border-radius: var(--card-radius);
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.group-empty .empty-text {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
 /* 发票列表项 */
 .invoice-item {
   background-color: var(--card-bg);
@@ -446,6 +504,13 @@ input, select, button {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
+/* 待开票项 - 水平布局 */
+#pending-tab .invoice-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
 .invoice-item-header {
   display: flex;
   align-items: center;
@@ -453,11 +518,7 @@ input, select, button {
 }
 
 .invoice-item-header .checkbox {
-  margin-right: 10px;
-}
-
-.invoice-item-header .checkbox.hidden {
-  margin-right: 0;
+  flex-shrink: 0;
 }
 
 .invoice-item-header .invoice-no {
@@ -504,6 +565,16 @@ input, select, button {
   color: var(--warning-color);
 }
 
+.tag-xiaofeichongzhi {
+  background-color: #e6fffb;
+  color: #13c2c2;
+}
+
+.tag-yidongzhifu {
+  background-color: #fff7e6;
+  color: #d46b08;
+}
+
 .tag-pupiao {
   background-color: #e6f7ff;
   color: var(--primary-color);
@@ -514,12 +585,19 @@ input, select, button {
   color: #fa8c16;
 }
 
+/* 已开票内容区域 */
 .invoice-item-body {
   padding-left: 0;
 }
 
-.invoice-item.select-mode .invoice-item-body {
-  padding-left: 28px;
+/* 待开票内容区域 */
+#pending-tab .invoice-item-body {
+  padding-left: 0;
+  flex: 1;
+}
+
+.invoice-item-content {
+  flex: 1;
 }
 
 .invoice-row {
@@ -548,6 +626,7 @@ input, select, button {
   font-size: 15px;
 }
 
+/* 已开票底部按钮 */
 .invoice-item-footer {
   display: flex;
   justify-content: flex-end;
@@ -557,8 +636,9 @@ input, select, button {
   border-top: 1px solid #f0f0f0;
 }
 
-.invoice-item.select-mode .invoice-item-footer {
-  padding-left: 28px;
+/* 待开票底部按钮 */
+#pending-tab .invoice-item-footer {
+  padding-left: 0;
 }
 
 /* 底部操作栏 */
@@ -568,23 +648,14 @@ input, select, button {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: sticky;
   bottom: 0;
-}
-
-.bottom-bar.select-mode {
-  justify-content: space-between;
 }
 
 .bottom-bar .selected-info {
   font-size: 14px;
   color: var(--text-secondary);
-  display: none;
-}
-
-.bottom-bar.select-mode .selected-info {
-  display: block;
 }
 
 .bottom-bar .selected-info .count {
@@ -595,6 +666,22 @@ input, select, button {
 .bottom-bar .selected-info .total {
   color: var(--danger-color);
   font-weight: bold;
+}
+
+/* 已开票复选框隐藏 */
+.checkbox.hidden {
+  visibility: hidden;
+  width: 0;
+  margin-right: 0;
+}
+
+/* 已开票底部操作栏选择模式 */
+.bottom-bar.select-mode {
+  justify-content: space-between;
+}
+
+.bottom-bar.select-mode .selected-info {
+  display: block;
 }
 
 .bottom-bar .btn-cancel {

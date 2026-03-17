@@ -27,22 +27,9 @@
         <div class="filter-row">
           <label class="filter-label">交易时间</label>
           <div class="filter-inputs">
-            <input type="date" placeholder="开始日期">
+            <input type="date" id="date-start" placeholder="开始日期">
             <span class="date-separator">至</span>
-            <input type="date" placeholder="结束日期">
-          </div>
-        </div>
-        <div class="filter-row">
-          <label class="filter-label">业务类型</label>
-          <div class="filter-inputs">
-            <select>
-              <option value="">全部</option>
-              <option value="gongben">工本费</option>
-              <option value="weiyue">违约金</option>
-              <option value="tingche">停车费</option>
-              <option value="quanyi">权益及服务</option>
-              <option value="yuetong">粤通商城</option>
-            </select>
+            <input type="date" id="date-end" placeholder="结束日期">
           </div>
         </div>
         <div class="filter-actions">
@@ -53,154 +40,17 @@
 
       <!-- 列表区域 -->
       <div class="list-section">
-        <div class="list-header" id="list-header">
-          <div class="select-all">
-            <div id="select-all" class="checkbox"></div>
-            <span>全选</span>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 工本费 -->
-        <div class="invoice-item" data-id="1" data-amount="25.00">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-gongben">工本费</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">产品号</span>
-              <span class="value">GB202401150001</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">交易时间</span>
-              <span class="value">2024-01-15 10:30:22</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥25.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-invoice">开具</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 违约金 -->
-        <div class="invoice-item" data-id="2" data-amount="50.00">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-weiyue">违约金</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">银行账号</span>
-              <span class="value">6222 **** **** 1234</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">交易时间</span>
-              <span class="value">2024-01-14 16:45:10</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥50.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-invoice">开具</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 停车费 -->
-        <div class="invoice-item" data-id="3" data-amount="38.00">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-tingche">停车费</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">车牌号</span>
-              <span class="value">粤A12345</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">入场时间</span>
-              <span class="value">2024-01-13 09:20:35</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">出场时间</span>
-              <span class="value">2024-01-13 11:45:20</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥38.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-invoice">开具</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 权益及服务 -->
-        <div class="invoice-item" data-id="4" data-amount="128.00">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-quanyi">权益及服务</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">产品号</span>
-              <span class="value">QY202401120008</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">交易时间</span>
-              <span class="value">2024-01-12 14:15:48</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥128.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-invoice">开具</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 粤通商城 -->
-        <div class="invoice-item" data-id="5" data-amount="256.50">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-yuetong">粤通商城</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">订单号</span>
-              <span class="value">YT202401110021</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">商品名</span>
-              <span class="value">车载香水套装</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">交易时间</span>
-              <span class="value">2024-01-11 11:30:00</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥256.50</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-invoice">开具</button>
-          </div>
+        <div id="pending-invoice-list">
+          <!-- 发票列表项将由JS动态渲染 -->
         </div>
       </div>
 
       <!-- 底部操作栏 -->
-      <div class="bottom-bar" id="bottom-bar">
+      <div class="bottom-bar" id="bottom-bar" style="display: none;">
         <div class="selected-info">
           已选中 <span class="count">0</span> 条，合计金额 <span class="total">¥0.00</span>
         </div>
-        <button class="btn btn-cancel" onclick="cancelSelectMode()">取消</button>
-        <button class="btn btn-primary" id="confirm-btn" onclick="confirmBatchInvoice()">批量开具</button>
+        <button class="btn btn-primary" id="confirm-btn" onclick="confirmBatchInvoice()">开具</button>
       </div>
     </div>
 
@@ -211,22 +61,9 @@
         <div class="filter-row">
           <label class="filter-label">开票日期</label>
           <div class="filter-inputs">
-            <input type="date" placeholder="开始日期">
+            <input type="date" id="completed-date-start" placeholder="开始日期">
             <span class="date-separator">至</span>
-            <input type="date" placeholder="结束日期">
-          </div>
-        </div>
-        <div class="filter-row">
-          <label class="filter-label">业务类型</label>
-          <div class="filter-inputs">
-            <select>
-              <option value="">全部</option>
-              <option value="gongben">工本费</option>
-              <option value="weiyue">违约金</option>
-              <option value="tingche">停车费</option>
-              <option value="quanyi">权益及服务</option>
-              <option value="yuetong">粤通商城</option>
-            </select>
+            <input type="date" id="completed-date-end" placeholder="结束日期">
           </div>
         </div>
         <div class="filter-actions">
@@ -237,165 +74,18 @@
 
       <!-- 列表区域 -->
       <div class="list-section">
-        <div class="list-header" id="completed-list-header">
-          <div class="select-all">
-            <div id="completed-select-all" class="checkbox"></div>
-            <span>全选</span>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 工本费 普票 -->
-        <div class="invoice-item completed-item" data-id="1" data-invoice-no="24400190011112345678">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-pupiao">普票</span>
-            <span class="tag tag-gongben">工本费</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">发票号码</span>
-              <span class="value">24400190011112345678</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">开票日期</span>
-              <span class="value">2024-01-10</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥25.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-view" onclick="viewCompletedDetail(1)">查看</button>
-            <button class="btn btn-sm btn-email" onclick="sendEmail(1)">发送邮箱</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 违约金 专票 -->
-        <div class="invoice-item completed-item" data-id="2" data-invoice-no="24400190011112345679">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-zhuanpiao">专票</span>
-            <span class="tag tag-weiyue">违约金</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">发票号码</span>
-              <span class="value">24400190011112345679</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">开票日期</span>
-              <span class="value">2024-01-09</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥500.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-view" onclick="viewCompletedDetail(2)">查看</button>
-            <button class="btn btn-sm btn-email" onclick="sendEmail(2)">发送邮箱</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 停车费 普票 -->
-        <div class="invoice-item completed-item" data-id="3" data-invoice-no="24400190011112345680">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-pupiao">普票</span>
-            <span class="tag tag-tingche">停车费</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">发票号码</span>
-              <span class="value">24400190011112345680</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">开票日期</span>
-              <span class="value">2024-01-08</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥38.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-view" onclick="viewCompletedDetail(3)">查看</button>
-            <button class="btn btn-sm btn-email" onclick="sendEmail(3)">发送邮箱</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 权益及服务 专票 -->
-        <div class="invoice-item completed-item" data-id="4" data-invoice-no="24400190011112345681">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-zhuanpiao">专票</span>
-            <span class="tag tag-quanyi">权益及服务</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">发票号码</span>
-              <span class="value">24400190011112345681</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">开票日期</span>
-              <span class="value">2024-01-07</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥128.00</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-view" onclick="viewCompletedDetail(4)">查看</button>
-            <button class="btn btn-sm btn-email" onclick="sendEmail(4)">发送邮箱</button>
-          </div>
-        </div>
-
-        <!-- 发票列表项 - 粤通商城 普票 -->
-        <div class="invoice-item completed-item" data-id="5" data-invoice-no="24400190011112345682">
-          <div class="invoice-item-header">
-            <div class="checkbox hidden"></div>
-            <span class="tag tag-pupiao">普票</span>
-            <span class="tag tag-yuetong">粤通商城</span>
-          </div>
-          <div class="invoice-item-body">
-            <div class="invoice-row">
-              <span class="label">发票号码</span>
-              <span class="value">24400190011112345682</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">开票日期</span>
-              <span class="value">2024-01-06</span>
-            </div>
-            <div class="invoice-row">
-              <span class="label">金额</span>
-              <span class="amount">¥256.50</span>
-            </div>
-          </div>
-          <div class="invoice-item-footer">
-            <button class="btn btn-sm btn-view" onclick="viewCompletedDetail(5)">查看</button>
-            <button class="btn btn-sm btn-email" onclick="sendEmail(5)">发送邮箱</button>
-          </div>
-        </div>
-
-        <!-- 分页 -->
-        <div class="pagination">
-          <button class="page-btn" disabled>上一页</button>
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <button class="page-btn">下一页</button>
+        <div id="completed-invoice-list">
+          <!-- 发票列表项将由JS动态渲染 -->
         </div>
       </div>
 
       <!-- 底部操作栏 -->
-      <div class="bottom-bar" id="completed-bottom-bar">
+      <div class="bottom-bar" id="completed-bottom-bar" style="display: none;">
         <div class="selected-info">
           已选中 <span class="count">0</span> 条
         </div>
         <button class="btn btn-cancel" onclick="cancelCompletedSelectMode()">取消</button>
-        <button class="btn btn-primary" id="completed-confirm-btn" onclick="toggleCompletedSelectMode()">批量发送</button>
+        <button class="btn btn-primary" id="completed-confirm-btn" onclick="confirmBatchSendEmail()">确认发送</button>
       </div>
     </div>
 
