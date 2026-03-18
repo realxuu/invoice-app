@@ -25,7 +25,7 @@ const businessTypes = {
   yidongzhifu: { name: '移动支付发票', tagClass: 'tag-yidongzhifu', order: 2, isExternal: true, externalUrl: 'mobile-payment.html' },
   gongben: { name: '工本费', tagClass: 'tag-gongben', order: 3 },
   weiyue: { name: '违约金', tagClass: 'tag-weiyue', order: 4 },
-  tingche: { name: '停车费', tagClass: 'tag-tingche', order: 5 },
+  tingche: { name: '停车费', tagClass: 'tag-tingche', order: 5, guideUrl: 'parking-guide.html' },
   quanyi: { name: '权益及服务', tagClass: 'tag-quanyi', order: 6 },
   yuetong: { name: '粤通商城', tagClass: 'tag-yuetong', order: 7 }
 };
@@ -186,6 +186,9 @@ function renderPendingInvoices() {
     // 默认折叠
     const isExpanded = groupExpandState[type] === true;
 
+    // 是否有查看指引链接
+    const hasGuide = typeConfig.guideUrl;
+
     html += `
       <div class="invoice-group" data-type="${type}">
         <div class="group-header" onclick="toggleGroup('${type}')">
@@ -194,6 +197,7 @@ function renderPendingInvoices() {
             <span class="group-title">${typeConfig.name}</span>
             <span class="group-count">${items.length}条</span>
           </div>
+          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-btn" onclick="event.stopPropagation()">查看指引</a>` : ''}
         </div>
         <div class="group-content" style="display: ${isExpanded ? 'block' : 'none'}">
     `;
@@ -206,7 +210,8 @@ function renderPendingInvoices() {
     } else {
       html += `
         <div class="group-empty">
-          <span class="empty-text">暂无待开票数据</span>
+          <span class="empty-text">${hasGuide ? '暂无待开票数据，' : '暂无待开票数据'}</span>
+          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-text">查看开票指引</a>` : ''}
         </div>
       `;
     }
@@ -318,6 +323,9 @@ function renderCompletedInvoices() {
     // 默认折叠
     const isExpanded = completedGroupExpandState[type] === true;
 
+    // 是否有查看指引链接
+    const hasGuide = typeConfig.guideUrl;
+
     html += `
       <div class="invoice-group" data-type="${type}">
         <div class="group-header" onclick="toggleCompletedGroup('${type}')">
@@ -326,6 +334,7 @@ function renderCompletedInvoices() {
             <span class="group-title">${typeConfig.name}</span>
             <span class="group-count">${items.length}条</span>
           </div>
+          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-btn" onclick="event.stopPropagation()">查看指引</a>` : ''}
         </div>
         <div class="group-content" style="display: ${isExpanded ? 'block' : 'none'}">
     `;
@@ -338,7 +347,8 @@ function renderCompletedInvoices() {
     } else {
       html += `
         <div class="group-empty">
-          <span class="empty-text">暂无已开票数据</span>
+          <span class="empty-text">${hasGuide ? '暂无已开票数据，' : '暂无已开票数据'}</span>
+          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-text">查看开票指引</a>` : ''}
         </div>
       `;
     }

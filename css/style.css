@@ -495,6 +495,28 @@ input, select, button {
   font-size: 13px;
 }
 
+/* 查看指引链接 */
+.guide-link-btn {
+  font-size: 13px;
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 4px 8px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+.guide-link-btn:hover {
+  background: #e6f7ff;
+}
+
+.guide-link-text {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 13px;
+}
+
 /* 发票列表项 */
 .invoice-item {
   background-color: var(--card-bg);

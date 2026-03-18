@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>停车场指引</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .guide-content {
+      padding: 16px;
+    }
+
+    /* 搜索框 */
+    .search-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 20px;
+      padding: 0 12px;
+    }
+
+    .search-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      opacity: 0.4;
+    }
+
+    .search-input {
+      flex: 1;
+      height: 36px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: #999;
+    }
+
+    .search-clear {
+      width: 18px;
+      height: 18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #999;
+      font-size: 16px;
+    }
+
+    .search-clear.show {
+      display: flex;
+    }
+
+    .parking-list {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .parking-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .parking-item:last-child {
+      border-bottom: none;
+    }
+
+    .parking-item:active {
+      background: #f5f5f5;
+    }
+
+    .parking-info {
+      flex: 1;
+    }
+
+    .parking-name {
+      font-size: 15px;
+      color: #333;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .parking-address {
+      font-size: 13px;
+      color: #999;
+    }
+
+    .parking-arrow {
+      color: #ccc;
+      font-size: 18px;
+    }
+
+    /* 指引弹窗 */
+    .guide-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .guide-modal.show {
+      display: flex;
+    }
+
+    .guide-modal-content {
+      background: #fff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 340px;
+      max-height: 70vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .guide-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .guide-modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .guide-modal-close {
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .guide-modal-body {
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .guide-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      padding-left: 8px;
+      border-left: 3px solid #1890ff;
+    }
+
+    .guide-section {
+      margin-bottom: 16px;
+    }
+
+    .guide-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-text {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .guide-text p {
+      margin-bottom: 6px;
+    }
+
+    .guide-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-tip {
+      background: #fffbe6;
+      border: 1px solid #ffe58f;
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #d48806;
+      line-height: 1.6;
+    }
+
+    .guide-phone {
+      color: #1890ff;
+      text-decoration: none;
+    }
+
+    .empty-tip {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- 顶部导航 -->
+    <header class="header">
+      <a href="javascript:history.back()" class="back-btn"></a>
+      <h1 class="title">停车场指引</h1>
+    </header>
+
+    <!-- 内容区域 -->
+    <div class="guide-content">
+      <!-- 搜索框 -->
+      <div class="search-section">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input type="text" class="search-input" id="search-input" placeholder="搜索停车场名称">
+          <span class="search-clear" id="search-clear" onclick="clearSearch()">&times;</span>
+        </div>
+      </div>
+
+      <div class="parking-list" id="parking-list">
+        <!-- 停车场列表由JS渲染 -->
+      </div>
+    </div>
+
+    <!-- 指引弹窗 -->
+    <div class="guide-modal" id="guide-modal">
+      <div class="guide-modal-content">
+        <div class="guide-modal-header">
+          <span class="guide-modal-title" id="guide-modal-title">停车场指引</span>
+          <span class="guide-modal-close" onclick="closeGuideModal()">&times;</span>
+        </div>
+        <div class="guide-modal-body" id="guide-modal-body">
+          <!-- 指引内容 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 停车场数据
+    const parkingData = [
+      {
+        id: 1,
+        name: '正佳广场停车场',
+        address: '广州市天河区天河路228号',
+        guide: {
+          openTime: '营业时间：24小时',
+          invoiceMethod: '开票方式：扫描停车小票二维码或在服务台办理',
+          contact: '咨询电话：020-38331111',
+          tip: '缴费后30天内可开具发票，超过时效需联系客服处理'
+        }
+      },
+      {
+        id: 2,
+        name: '太古汇停车场',
+        address: '广州市天河区天河路383号',
+        guide: {
+          openTime: '营业时间：07:00-24:00',
+          invoiceMethod: '开票方式：关注"太古汇"公众号，进入停车服务申请开票',
+          contact: '咨询电话：020-38681111',
+          tip: '电子发票将在申请后1-3个工作日内开具'
+        }
+      },
+      {
+        id: 3,
+        name: '万菱汇停车场',
+        address: '广州市天河区天河路230号',
+        guide: {
+          openTime: '营业时间：24小时',
+          invoiceMethod: '开票方式：缴费后在出口处扫码开票，或前往B1层服务台',
+          contact: '咨询电话：020-38390888',
+          tip: '周末及节假日开票请前往服务台办理'
+        }
+      },
+      {
+        id: 4,
+        name: '天环广场停车场',
+        address: '广州市天河区天河路218号',
+        guide: {
+          openTime: '营业时间：10:00-22:00',
+          invoiceMethod: '开票方式：通过"天环广场"小程序在线申请',
+          contact: '咨询电话：020-85593888',
+          tip: '每月1-5号为系统维护期，暂不支持线上开票'
+        }
+      },
+      {
+        id: 5,
+        name: '花城汇停车场',
+        address: '广州市天河区珠江新城花城大道',
+        guide: {
+          openTime: '营业时间：24小时',
+          invoiceMethod: '开票方式：关注"花城汇"公众号，停车缴费后自动推送开票入口',
+          contact: '咨询电话：020-85656666',
+          tip: '支持批量开票，可选择多个停车记录合并开具'
+        }
+      }
+    ];
+
+    // 当前搜索关键词
+    let currentKeyword = '';
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      renderParkingList();
+      initSearch();
+    });
+
+    // 初始化搜索功能
+    function initSearch() {
+      const searchInput = document.getElementById('search-input');
+      const searchClear = document.getElementById('search-clear');
+
+      searchInput.addEventListener('input', function() {
+        currentKeyword = this.value.trim();
+        searchClear.classList.toggle('show', currentKeyword.length > 0);
+        renderParkingList();
+      });
+    }
+
+    // 清空搜索
+    function clearSearch() {
+      const searchInput = document.getElementById('search-input');
+      const searchClear = document.getElementById('search-clear');
+      searchInput.value = '';
+      currentKeyword = '';
+      searchClear.classList.remove('show');
+      renderParkingList();
+      searchInput.focus();
+    }
+
+    // 渲染停车场列表
+    function renderParkingList() {
+      const container = document.getElementById('parking-list');
+
+      // 根据关键词筛选
+      const filteredData = currentKeyword
+        ? parkingData.filter(item => item.name.includes(currentKeyword))
+        : parkingData;
+
+      if (filteredData.length === 0) {
+        container.innerHTML = `<div class="empty-tip">${currentKeyword ? '未找到匹配的停车场' : '暂无停车场数据'}</div>`;
+        return;
+      }
+
+      let html = '';
+      filteredData.forEach(item => {
+        html += `
+          <div class="parking-item" onclick="showGuide(${item.id})">
+            <div class="parking-info">
+              <div class="parking-name">${item.name}</div>
+              <div class="parking-address">${item.address}</div>
+            </div>
+            <span class="parking-arrow">›</span>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // 显示指引弹窗
+    function showGuide(id) {
+      const parking = parkingData.find(item => item.id === id);
+      if (!parking) return;
+
+      const modal = document.getElementById('guide-modal');
+      const title = document.getElementById('guide-modal-title');
+      const body = document.getElementById('guide-modal-body');
+
+      title.textContent = parking.name;
+
+      body.innerHTML = `
+        <div class="guide-section">
+          <div class="guide-section-title">营业时间</div>
+          <div class="guide-text">${parking.guide.openTime}</div>
+        </div>
+        <div class="guide-section">
+          <div class="guide-section-title">开票方式</div>
+          <div class="guide-text">${parking.guide.invoiceMethod}</div>
+        </div>
+        <div class="guide-section">
+          <div class="guide-section-title">联系方式</div>
+          <div class="guide-text">${parking.guide.contact}</div>
+        </div>
+        <div class="guide-section">
+          <div class="guide-tip">${parking.guide.tip}</div>
+        </div>
+      `;
+
+      modal.classList.add('show');
+    }
+
+    // 关闭指引弹窗
+    function closeGuideModal() {
+      const modal = document.getElementById('guide-modal');
+      modal.classList.remove('show');
+    }
+
+    // 点击遮罩关闭弹窗
+    document.getElementById('guide-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeGuideModal();
+      }
+    });
+  </script>
+</body>
+</html>
