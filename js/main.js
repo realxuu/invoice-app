@@ -8,26 +8,26 @@ let currentEmailInvoiceId = null;
 
 // 待开票数据
 const pendingInvoiceData = [
-  { id: 1, type: 'gongben', typeName: '工本费', productNo: 'GB202401150001', amount: 25.00, time: '2024-01-15 10:30:22' },
-  { id: 2, type: 'gongben', typeName: '工本费', productNo: 'GB202401160002', amount: 30.00, time: '2024-01-16 14:20:10' },
-  { id: 3, type: 'weiyue', typeName: '违约金', bankAccount: '6222 **** **** 1234', amount: 50.00, time: '2024-01-14 16:45:10' },
-  { id: 4, type: 'weiyue', typeName: '违约金', bankAccount: '6222 **** **** 5678', amount: 80.00, time: '2024-01-13 11:30:00' },
+  { id: 1, type: 'gongben', typeName: '工本费发票', productNo: 'GB202401150001', amount: 25.00, time: '2024-01-15 10:30:22' },
+  { id: 2, type: 'gongben', typeName: '工本费发票', productNo: 'GB202401160002', amount: 30.00, time: '2024-01-16 14:20:10' },
+  { id: 3, type: 'weiyue', typeName: '违约金发票', bankAccount: '6222 **** **** 1234', amount: 50.00, time: '2024-01-14 16:45:10' },
+  { id: 4, type: 'weiyue', typeName: '违约金发票', bankAccount: '6222 **** **** 5678', amount: 80.00, time: '2024-01-13 11:30:00' },
   // 停车费无数据，测试空状态
-  // { id: 5, type: 'tingche', typeName: '停车费', plateNo: '粤A12345', entryTime: '2024-01-13 09:20:35', exitTime: '2024-01-13 11:45:20', amount: 38.00 },
-  { id: 6, type: 'quanyi', typeName: '权益及服务', productNo: 'QY202401120008', amount: 128.00, time: '2024-01-12 14:15:48' },
+  // { id: 5, type: 'tingche', typeName: '停车费发票', plateNo: '粤A12345', entryTime: '2024-01-13 09:20:35', exitTime: '2024-01-13 11:45:20', amount: 38.00 },
+  { id: 6, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401120008', amount: 128.00, time: '2024-01-12 14:15:48' },
   // 粤通商城无数据，测试空状态
-  // { id: 7, type: 'yuetong', typeName: '粤通商城', orderNo: 'YT202401110021', productName: '车载香水套装', amount: 256.50, time: '2024-01-11 11:30:00' },
+  // { id: 7, type: 'yuetong', typeName: '粤通商城发票', orderNo: 'YT202401110021', productName: '车载香水套装', amount: 256.50, time: '2024-01-11 11:30:00' },
 ];
 
 // 业务类型配置
 const businessTypes = {
   xiaofeichongzhi: { name: '消费充值发票', tagClass: 'tag-xiaofeichongzhi', order: 1, isExternal: true, externalUrl: 'consume-recharge.html' },
   yidongzhifu: { name: '移动支付发票', tagClass: 'tag-yidongzhifu', order: 2, isExternal: true, externalUrl: 'mobile-payment.html' },
-  gongben: { name: '工本费', tagClass: 'tag-gongben', order: 3 },
-  weiyue: { name: '违约金', tagClass: 'tag-weiyue', order: 4 },
-  tingche: { name: '停车费', tagClass: 'tag-tingche', order: 5, guideUrl: 'parking-guide.html' },
-  quanyi: { name: '权益及服务', tagClass: 'tag-quanyi', order: 6 },
-  yuetong: { name: '粤通商城', tagClass: 'tag-yuetong', order: 7 }
+  gongben: { name: '工本费发票', tagClass: 'tag-gongben', order: 3 },
+  weiyue: { name: '违约金发票', tagClass: 'tag-weiyue', order: 4 },
+  tingche: { name: '停车费发票', tagClass: 'tag-tingche', order: 5, guideUrl: 'parking-guide.html' },
+  quanyi: { name: '权益及服务发票', tagClass: 'tag-quanyi', order: 6 },
+  yuetong: { name: '粤通商城发票', tagClass: 'tag-yuetong', order: 7 }
 };
 
 // 分组展开状态
@@ -323,9 +323,6 @@ function renderCompletedInvoices() {
     // 默认折叠
     const isExpanded = completedGroupExpandState[type] === true;
 
-    // 是否有查看指引链接
-    const hasGuide = typeConfig.guideUrl;
-
     html += `
       <div class="invoice-group" data-type="${type}">
         <div class="group-header" onclick="toggleCompletedGroup('${type}')">
@@ -334,7 +331,6 @@ function renderCompletedInvoices() {
             <span class="group-title">${typeConfig.name}</span>
             <span class="group-count">${items.length}条</span>
           </div>
-          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-btn" onclick="event.stopPropagation()">查看指引</a>` : ''}
         </div>
         <div class="group-content" style="display: ${isExpanded ? 'block' : 'none'}">
     `;
@@ -347,8 +343,7 @@ function renderCompletedInvoices() {
     } else {
       html += `
         <div class="group-empty">
-          <span class="empty-text">${hasGuide ? '暂无已开票数据，' : '暂无已开票数据'}</span>
-          ${hasGuide ? `<a href="${typeConfig.guideUrl}" class="guide-link-text">查看开票指引</a>` : ''}
+          <span class="empty-text">暂无已开票数据</span>
         </div>
       `;
     }
