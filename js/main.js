@@ -14,7 +14,14 @@ const pendingInvoiceData = [
   { id: 4, type: 'weiyue', typeName: '违约金发票', bankAccount: '6222 **** **** 5678', amount: 80.00, time: '2024-01-13 11:30:00' },
   // 停车费无数据，测试空状态
   // { id: 5, type: 'tingche', typeName: '停车费发票', plateNo: '粤A12345', entryTime: '2024-01-13 09:20:35', exitTime: '2024-01-13 11:45:20', amount: 38.00 },
-  { id: 6, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401120008', amount: 128.00, time: '2024-01-12 14:15:48' },
+  { id: 6, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401120008', productName: '权益服务费', amount: 128.00, time: '2024-01-12 14:15:48' },
+  { id: 7, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401130009', productName: '权益服务费', amount: 88.00, time: '2024-01-13 10:20:30' },
+  // 货车服务费（预存）
+  { id: 8, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401140010', productName: '货车服务费（预存）', amount: 200.00, time: '2024-01-14 09:15:00' },
+  // 货车服务费（安泰日结）
+  { id: 9, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401150011', productName: '货车服务费（安泰日结）', amount: 150.00, time: '2024-01-15 14:30:00' },
+  // 货车服务费（中恒日结）
+  { id: 10, type: 'quanyi', typeName: '权益及服务发票', productNo: 'QY202401160012', productName: '货车服务费（中恒日结）', amount: 180.00, time: '2024-01-16 11:45:00' },
   // 粤通商城无数据，测试空状态
   // { id: 7, type: 'yuetong', typeName: '粤通商城发票', orderNo: 'YT202401110021', productName: '车载香水套装', amount: 256.50, time: '2024-01-11 11:30:00' },
 ];
@@ -251,6 +258,7 @@ function renderInvoiceItem(item, typeConfig) {
   } else if (item.type === 'quanyi') {
     detailRows = `
       <div class="invoice-row"><span class="label">产品号</span><span class="value">${item.productNo}</span></div>
+      <div class="invoice-row"><span class="label">产品名称</span><span class="value">${item.productName}</span></div>
       <div class="invoice-row"><span class="label">交易时间</span><span class="value">${item.time}</span></div>
     `;
   } else if (item.type === 'yuetong') {
@@ -262,7 +270,7 @@ function renderInvoiceItem(item, typeConfig) {
   }
 
   return `
-    <div class="invoice-item" data-id="${item.id}" data-amount="${item.amount}" data-type="${item.type}">
+    <div class="invoice-item" data-id="${item.id}" data-amount="${item.amount}" data-type="${item.type}" data-product-name="${item.productName || ''}">
       <div class="checkbox"></div>
       <div class="invoice-item-content">
         <div class="invoice-item-body">
@@ -505,6 +513,33 @@ function bindCheckboxEvents() {
             checkedItems.forEach(checkedBox => {
               checkedBox.classList.remove('checked');
             });
+          }
+
+          // 权益服务类型：检查是否有不同产品名称的选中项
+          if (currentType === 'quanyi') {
+            const currentProductName = currentItem.getAttribute('data-product-name');
+            const allCheckedItems = document.querySelectorAll('#pending-tab .invoice-item .checkbox.checked');
+            let hasDifferentProduct = false;
+
+            allCheckedItems.forEach(checkedBox => {
+              const item = checkedBox.closest('.invoice-item');
+              const type = item ? item.getAttribute('data-type') : null;
+              const productName = item ? item.getAttribute('data-product-name') : null;
+              if (type === 'quanyi' && productName && productName !== currentProductName) {
+                hasDifferentProduct = true;
+              }
+            });
+
+            // 如果有不同产品名称的选中项，清除所有权益服务类型的选中项
+            if (hasDifferentProduct) {
+              showToast('不同产品类型发票项目不可同时勾选。');
+              allCheckedItems.forEach(checkedBox => {
+                const item = checkedBox.closest('.invoice-item');
+                if (item && item.getAttribute('data-type') === 'quanyi') {
+                  checkedBox.classList.remove('checked');
+                }
+              });
+            }
           }
         }
 
@@ -885,4 +920,24 @@ function confirmSendEmail() {
   if (isCompletedSelectMode) {
     cancelCompletedSelectMode();
   }
+}
+
+// Toast 提示函数
+function showToast(message, duration) {
+  duration = duration || 2000;
+
+  // 检查是否已存在 toast 元素
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(function() {
+    toast.classList.remove('show');
+  }, duration);
 }
